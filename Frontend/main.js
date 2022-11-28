@@ -7,7 +7,7 @@ function onLoadScript() {
 
 
 function connectToCountSocket() {
-    var socket = new SockJS-client('/upgrade');
+    var socket = new SockJS('/upgrade');
     stompClient = Stomp.over(socket);  
     stompClient.connect({}, function(frame) {
         setConnected(true);
