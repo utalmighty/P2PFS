@@ -1,8 +1,10 @@
 
 var countClient = null;
+var privateClient = null;
 
 function onLoadScript() {
-    connectToCountSocket();
+    //connectToCountSocket();
+    connectToPrivateSocket();
 }
 
 function connectToCountSocket() {
@@ -16,6 +18,26 @@ function connectToCountSocket() {
     });    
 }
 
+function connectToPrivateSocket() {
+    var socket = new SockJS('/upgrade');
+    privateClient = Stomp.over(socket);  
+    privateClient.connect({}, function(frame) { 
+        privateClient.subscribe('/user/queue/send', function(messageOutput) {
+            updatePrivateMessage(messageOutput.body);
+        })
+        privateClient.send("/app/private");
+    });    
+}
+
+function updatePrivateMessage(message) {
+    $("#private").append("<tr><td>" + message + "</td></tr>");
+}
+
 function updateCount(message) {
     $("#count").append("<tr><td>" + message["count"] + "</td></tr>");
+}
+
+function sendPrivateHello() {
+    console.log("Sending private message");
+    privateClient.send("/app/private");
 }
