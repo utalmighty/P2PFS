@@ -1,43 +1,35 @@
 
-var countClient = null;
-var privateClient = null;
+var socketClient = null;
 
 function onLoadScript() {
-    //connectToCountSocket();
-    connectToPrivateSocket();
+    connectToSockets();
 }
 
-function connectToCountSocket() {
+function connectToSockets() {
     var socket = new SockJS('/upgrade');
-    countClient = Stomp.over(socket);  
-    countClient.connect({}, function(frame) { 
-        countClient.subscribe('/topic/count', function(messageOutput) {
+    socketClient = Stomp.over(socket);  
+    socketClient.connect({}, function(frame) { 
+        socketClient.subscribe('/topic/count', function(messageOutput) {
             updateCount(JSON.parse(messageOutput.body));
         })
-        countClient.send("/app/count");
-    });    
-}
-
-function connectToPrivateSocket() {
-    var socket = new SockJS('/upgrade');
-    privateClient = Stomp.over(socket);  
-    privateClient.connect({}, function(frame) { 
-        privateClient.subscribe('/user/queue/send', function(messageOutput) {
+        socketClient.subscribe('/user/queue/send', function(messageOutput) {
+            console.log("First Me");
             updatePrivateMessage(messageOutput.body);
         })
-        privateClient.send("/app/private");
-    });    
+        socketClient.send("/app/count");
+        socketClient.send("/app/private");
+    });   
 }
 
 function updatePrivateMessage(message) {
-    $("#private").append("<tr><td>" + message + "</td></tr>");
+    document.getElementById("messageInput").value = message;
 }
 
 function updateCount(message) {
-    $("#count").append("<tr><td>" + message["count"] + "</td></tr>");
+    document.getElementById("countInput").value = message["count"];
 }
 
 function sendPrivateHello() {
     console.log("Sending private message");
-    privateClient.send("/app/private");
+    socketClient.send("/app/private");
 }

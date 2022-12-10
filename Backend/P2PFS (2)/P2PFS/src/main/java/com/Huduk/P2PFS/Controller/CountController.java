@@ -5,6 +5,7 @@ import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
@@ -32,10 +33,8 @@ public class CountController {
 	@MessageMapping("/private")
 	public void privateMessage(@Header("simpSessionId") String sessionId, Principal principal) {
 		String destination = principal.getName();
-		String message = "Utkarsh Jaiswal Message: "+sessionId + " Principal: "+ principal.getName();
-		System.out.println("Session Id: "+ sessionId + " Principal Name: " + destination);
+		String message = "Session Id: "+ sessionId + " Principal Name: "+ destination;
+		System.out.println(message);
 		template.convertAndSendToUser(destination, "/queue/send", message);
-//		String userQueue = "/user/" + destination + "/queue/send";
-//		template.convertAndSend(userQueue, message);
 	}
 }

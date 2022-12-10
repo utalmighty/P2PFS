@@ -8,8 +8,12 @@
 </head>
 <body onload="onLoadScript()">
     <a>Hi</a>
-    <div id="count"></div>
-    <div id="private"></div>
+    <div id="count">
+        Count: <input id="countInput" disabled="true">
+    </div>
+    <div id="private">
+        Message: <input id="messageInput" disabled="true">
+    </div>
     <button onclick="sendPrivateHello()">Send</button>
 </body>
 <script src="/webjars/jquery/jquery.min.js"></script>

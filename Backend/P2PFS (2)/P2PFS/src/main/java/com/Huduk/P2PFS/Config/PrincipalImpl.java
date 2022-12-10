@@ -1,7 +1,7 @@
 package com.Huduk.P2PFS.Config;
 
 import java.security.Principal;
-import java.util.UUID;
+import java.util.Objects;
 
 public class PrincipalImpl implements Principal {
 	
@@ -16,4 +16,22 @@ public class PrincipalImpl implements Principal {
 		return user;
 	}
 
+	@Override
+	public int hashCode() {
+		return user.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PrincipalImpl other = (PrincipalImpl) obj;
+		return user.equals(other.getName());
+	}
+	
+	
 }
