@@ -1,7 +1,6 @@
 package com.Huduk.P2PFS.Config;
 
 import java.security.Principal;
-import java.util.Objects;
 
 public class PrincipalImpl implements Principal {
 	
