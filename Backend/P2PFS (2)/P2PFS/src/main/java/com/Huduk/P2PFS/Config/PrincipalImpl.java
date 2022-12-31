@@ -31,6 +31,11 @@ public class PrincipalImpl implements Principal {
 		PrincipalImpl other = (PrincipalImpl) obj;
 		return user.equals(other.getName());
 	}
+
+	@Override
+	public String toString() {
+		return "PrincipalImpl [user=" + user + "]";
+	}
 	
 	
 }
