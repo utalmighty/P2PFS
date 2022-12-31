@@ -12,9 +12,13 @@
         Count: <input id="countInput" disabled="true">
     </div>
     <div id="private">
-        Message: <input id="messageInput" disabled="true">
+        Offer Key: <input id="messageInput" disabled="true">
     </div>
-    <button onclick="sendPrivateHello()">Send</button>
+    <div id="key">
+        Enter Key: <input id="keyInput">
+    </div>
+    <button onclick="makeOffer()">Make Offer</button>
+    <button onclick="search()">Call</button>
 </body>
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
