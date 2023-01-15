@@ -6,6 +6,8 @@ import java.util.Random;
 
 import org.springframework.stereotype.Repository;
 
+import com.Huduk.P2PFS.Models.Connection;
+import com.Huduk.P2PFS.Models.FileMetaData;
 import com.Huduk.P2PFS.Models.Peers;
 import com.Huduk.P2PFS.Models.User;
 
@@ -20,11 +22,11 @@ public class FileRepoImpl implements FileRepo {
 	
 	private Random random = new Random();
 	
-	private Map<String, Peers> database = new HashMap<>();
+	private Map<String, Connection> database = new HashMap<>();
 	
 	
 	@Override
-	public String setSource(User source) {
+	public String setSource(User source, FileMetaData file) {
 		// TODO Auto-generated method stub
 		String url = generateRandom(7);
 		while (database.containsKey(url)) {
@@ -32,7 +34,8 @@ public class FileRepoImpl implements FileRepo {
 		}
 		Peers peers = new Peers();
 		peers.setSource(source);
-		database.put(url, peers);
+		Connection conn = new Connection(file, peers);
+		database.put(url, conn);
 		return url;
 	}
 	
@@ -53,10 +56,10 @@ public class FileRepoImpl implements FileRepo {
 	}
 
 	@Override
-	public Peers getPeersById(String id) throws Exception {
+	public Connection getConnectionById(String id) throws Exception {
 		if (database.containsKey(id)) {
-			Peers peer = database.get(id);
-			return peer;
+			Connection conn = database.get(id);
+			return conn;
 		}
 		throw new Exception("No such session in database by getPeersById()");
 	}
@@ -64,11 +67,11 @@ public class FileRepoImpl implements FileRepo {
 	@Override
 	public Peers setDestination(String id, User destination) throws Exception {
 		if (database.containsKey(id)) {
-			Peers peer = database.get(id);
+			Peers peer = database.get(id).getPeers();
 			peer.setDestination(destination);
 			return peer;
 		}
-		throw new Exception("No such session in database");
+		throw new Exception("No such peer in database");
 	}
 
 }
