@@ -11,4 +11,5 @@ public interface FileService {
 	public Map<String, Object> generateUniqueUrl(String sessionId, String destination, RTCDescription description, FileMetaData file);
 	public Connection getConnectionById(String id) throws Exception;
 	void addDestination(String sessionId, String destination, RTCDescription description, String id) throws Exception;
+	boolean isValidCountIncrementRequest(String id);
 }

@@ -61,6 +61,7 @@ async function makeOffer() {
       return;
     }
     peerConnection.dataChannel = peerConnection.createDataChannel("dataChannel");
+    console.log(peerConnection.dataChannel.readyState);
     const offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
     console.log("Offer Created: ", offer);
@@ -108,6 +109,10 @@ function updateCount(message) {
     document.getElementById("countInput").value = message["count"];
 }
 
+function incrementCount(uniqueId) {
+    signalingChannel.send("/app/updateCount/increment", {"id": uniqueId})
+}
+
 function getUpdatedCount() {
     signalingChannel.send("/app/count");
 }
@@ -143,7 +148,6 @@ function sendCandidate(candidate) {
 }
 
 
-
 function sendData() {
     //sendProgress.max = file.size;
     //receiveProgress.max = file.size;
@@ -171,7 +175,7 @@ function sendData() {
 
 function onReceiveMessageCallback(event) {
     const downloadAnchor = document.getElementById("download");
-    console.log(`Received Message ${event.data}`);
+    console.log(`Received Message ${event.data.byteLength}`);
     receiveBuffer.push(event.data);
     receivedSize += event.data.byteLength;
     //receiveProgress.value = receivedSize;
@@ -188,6 +192,8 @@ function onReceiveMessageCallback(event) {
         `Click to download '${upcomingFileName}' (${upcomingFileSize} bytes)`;
     downloadAnchor.style.display = 'block';
     // TODO: Close data channel
+    let key = document.getElementById("keyInput").value;
+    incrementCount(key);
     closeDataChannels();
     }
 }

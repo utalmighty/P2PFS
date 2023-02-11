@@ -48,4 +48,17 @@ public class FileServiceImpl implements FileService {
 		}
 	}
 
+	@Override
+	public boolean isValidCountIncrementRequest(String id) {
+		try {
+			Connection conn =  fileRepo.getConnectionById(id);
+			if (conn.getPeers().getSource() != null && conn.getPeers().getSource() != null) {
+				if (conn.getFile().getSize() > 0) return true;
+			}
+		}
+		catch(Exception e) {
+		}
+		return false;
+	}
+
 }
