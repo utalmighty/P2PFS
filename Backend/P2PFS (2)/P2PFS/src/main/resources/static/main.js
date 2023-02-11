@@ -46,6 +46,10 @@ function connectToSockets() {
 
 async function makeOffer() {
     const fileInput = document.getElementById("fileupload");
+    if (fileInput.files.length == 0) {
+        alert("Select file first");
+        return;
+    }
     file = fileInput.files[0];
     console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
     // Handle 0 size files.
@@ -167,7 +171,7 @@ function sendData() {
 
 function onReceiveMessageCallback(event) {
     const downloadAnchor = document.getElementById("download");
-    console.log(`Received Message ${event.data.byteLength}`);
+    console.log(`Received Message ${event.data}`);
     receiveBuffer.push(event.data);
     receivedSize += event.data.byteLength;
     //receiveProgress.value = receivedSize;
@@ -183,7 +187,7 @@ function onReceiveMessageCallback(event) {
     downloadAnchor.textContent =
         `Click to download '${upcomingFileName}' (${upcomingFileSize} bytes)`;
     downloadAnchor.style.display = 'block';
-
+    // TODO: Close data channel
     closeDataChannels();
     }
 }

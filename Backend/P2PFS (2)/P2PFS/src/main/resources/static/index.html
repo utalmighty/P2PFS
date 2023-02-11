@@ -7,23 +7,24 @@
     <title>P2PFS</title>
 </head>
 <body onload="onLoadScript()">
-    <a>Hi</a>
-    <div id="count">
-        Count: <input id="countInput" disabled="true">
+    <div>
+        <div id="count">
+            Count: <input id="countInput" disabled="true">
+        </div>
+        <div id="private">
+            Offer Key: <input id="messageInput" disabled="true">
+        </div>
+        <div id="key">
+            Enter Key: <input id="keyInput">
+        </div>
+        <div id="file">
+            <input id="fileupload" type="file" name="fileupload" />
+        </div>
+        <button onclick="makeOffer()">Make Offer</button>
+        <button onclick="search()">Call</button>
+        <button onclick="sendData()">Send</button>
+        <a id="download"></a>
     </div>
-    <div id="private">
-        Offer Key: <input id="messageInput" disabled="true">
-    </div>
-    <div id="key">
-        Enter Key: <input id="keyInput">
-    </div>
-    <div id="file">
-        <input id="fileupload" type="file" name="fileupload" />
-    </div>
-    <button onclick="makeOffer()">Make Offer</button>
-    <button onclick="search()">Call</button>
-    <button onclick="sendData()">Send</button>
-    <a id="download"></a>
 </body>
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
