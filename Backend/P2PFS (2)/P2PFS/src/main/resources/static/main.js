@@ -101,7 +101,14 @@ async function privateMessageIncomingLogic(messageBody) {
         let candidate = JSON.parse(message.icecandidate);
         console.log("Received Candidate of Peer", candidate);
         const remoteDesc = new RTCIceCandidate(candidate);
-        peerConnection.addIceCandidate(candidate);
+        peerConnection.addIceCandidate(candidate).then(()=> {
+            setTimeout(() => {
+                console.log(peerConnection.dataChannel.readyState)
+                if (peerConnection.dataChannel.readyState == "open") {
+                    sendData();
+                }
+            }, 1000);
+        })
     }
 }
 
@@ -171,7 +178,7 @@ function sendData() {
       fileReader.readAsArrayBuffer(slice);
     };
     readSlice(0);
-  }
+}
 
 function onReceiveMessageCallback(event) {
     const downloadAnchor = document.getElementById("download");
