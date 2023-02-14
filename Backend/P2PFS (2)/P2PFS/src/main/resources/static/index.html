@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="flip/flip.min.css" />
     <title>P2PFS</title>
 </head>
 <body onload="onLoadScript()">
@@ -25,7 +26,15 @@
         <!-- <button onclick="sendData()">Send</button> -->
         <a id="download"></a>
     </div>
+    <div class="tick"
+        data-value="1234"
+        data-did-init="setupFlip">
+        <div data-repeat="true">
+            <span data-view="flip"></span>
+        </div>
+    </div>
 </body>
+<script src="flip/flip.min.js"></script>
 <script src="/webjars/jquery/jquery.min.js"></script>
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
