@@ -2,28 +2,28 @@ const config = {
     'iceServers': [{
       'urls': ['stun:stun.l.google.com:19302']
     }]
-  };
+}
 
-const peerConnection = new RTCPeerConnection(config);
-let signalingChannel = null;
-let receiveBuffer = [];
-let upcomingFileSize = 0;
-let upcomingFileName = "";
-let receivedSize = 0;
-let count = 0;
-let flip = null;
-let keyInput = document.getElementById("keyInput");
-let makeOfferButton = document.getElementById("makeOfferButton");
-let callButton = document.getElementById("callButton");
+const peerConnection = new RTCPeerConnection(config)
+let signalingChannel = null
+let receiveBuffer = []
+let upcomingFileSize = 0
+let upcomingFileName = ""
+let receivedSize = 0
+let count = 0
+let flip = null
+let keyInput = document.getElementById("keyInput")
+let makeOfferButton = document.getElementById("makeOfferButton")
+let callButton = document.getElementById("callButton")
 let key = ""
 let isSender = false
 
 makeOfferButton.onclick = function () {
-    makeOffer();
+    makeOffer()
 }
 
 callButton.onclick = function () {
-    search();
+    sendSearch();
 }
 
 keyInput.onchange = function () {
@@ -35,7 +35,7 @@ peerConnection.onicecandidate = function(event) {
         console.log("Sending ice candaidate to peer:", event.candidate);
         sendCandidate(event.candidate);
     }
-};
+}
 
 peerConnection.ondatachannel =e =>{
     peerConnection.dataChannel = e.channel;
@@ -46,7 +46,6 @@ peerConnection.ondatachannel =e =>{
 function onLoadScript() {
     connectToSockets();
 }
-
 
 function connectToSockets() {
     let socket = new SockJS('/upgrade');
@@ -94,10 +93,6 @@ async function makeOffer() {
     sendOffer(offer);
 }
 
-async function search() {
-    sendSearch(key);
-}
-
 async function privateMessageIncomingLogic(messageBody) {
     let message = JSON.parse(messageBody);
     if (message.id) {
@@ -134,6 +129,9 @@ async function privateMessageIncomingLogic(messageBody) {
             }, 1000);
         })
     }
+    else if (message.error) {
+        alert(message.error)
+    }
 }
 
 function updateCount(message) {
@@ -161,8 +159,12 @@ function sendAnswer(id, answer) {
     signalingChannel.send("/app/answer", {"id": id}, answer.sdp);
 }
 
-function sendSearch(id) {
-    signalingChannel.send("/app/search", {"id": id}, "remove me");
+function sendSearch() {
+    if (key.trim().length <= 0){
+        alert("Please enter the unique key")
+        return
+    }
+    signalingChannel.send("/app/search", {"id": key}, "remove me");
 }
 
 function sendCandidate(candidate) {
@@ -176,7 +178,6 @@ function sendCandidate(candidate) {
         signalingChannel.send("/app/candidate", {"id": key, "peer": peer}, JSON.stringify(candidate));
     }
 }
-
 
 function sendData() {
     //sendProgress.max = file.size;

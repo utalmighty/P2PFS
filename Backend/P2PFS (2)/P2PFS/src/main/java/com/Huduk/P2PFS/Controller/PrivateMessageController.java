@@ -71,14 +71,23 @@ public class PrivateMessageController {
 		String destination = principal.getName();
 		String id = headers.get("id").get(0);
 		System.out.println("Recevied search request. Key: " +  id);
-		
-		Connection conn = fileService.getConnectionById(id);
-		
-		System.out.println("Sending Offer to destination");
 		Map<String, Object> offerResp = new HashMap<>();
-		offerResp.put("offer", conn.getPeers().getSource().getDescription());
-		offerResp.put("filename", conn.getFile().getName());
-		offerResp.put("filesize", conn.getFile().getSize());
+		Connection conn = null;
+		try {
+			conn = fileService.getConnectionById(id);
+		}
+		catch (Exception e) {
+			System.out.println(e.getLocalizedMessage());
+		}
+		System.out.println("Sending Offer to destination");
+		if (conn != null) {
+			offerResp.put("offer", conn.getPeers().getSource().getDescription());
+			offerResp.put("filename", conn.getFile().getName());
+			offerResp.put("filesize", conn.getFile().getSize());
+		}
+		else {
+			offerResp.put("error", "Peer offline");
+		}
 		template.convertAndSendToUser(destination, "/queue/send", offerResp);
 	}
 	
