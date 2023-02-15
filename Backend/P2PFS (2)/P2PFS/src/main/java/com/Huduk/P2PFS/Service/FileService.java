@@ -12,4 +12,5 @@ public interface FileService {
 	public Connection getConnectionById(String id) throws Exception;
 	void addDestination(String sessionId, String destination, RTCDescription description, String id) throws Exception;
 	boolean isValidCountIncrementRequest(String id);
+	void deleteConnection(String id);
 }

@@ -11,4 +11,5 @@ public interface FileRepo {
 	public boolean isValidId(String id);
 	public Peers setDestination(String id, User destination) throws Exception;
 	public Connection getConnectionById(String id) throws Exception;
+	public void deleteId(String id);
 }

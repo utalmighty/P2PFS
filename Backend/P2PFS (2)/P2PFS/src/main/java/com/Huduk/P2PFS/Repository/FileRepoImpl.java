@@ -75,4 +75,13 @@ public class FileRepoImpl implements FileRepo {
 		throw new Exception("No such peer in database");
 	}
 
+
+
+	@Override
+	public void deleteId(String id) {
+		if(database.containsKey(id)) {
+			database.remove(id);
+		}
+	}
+
 }

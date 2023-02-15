@@ -170,7 +170,6 @@ function sendSearch() {
 function sendCandidate(candidate) {
     let peer = "answer";
     if (isSender){
-        key = document.getElementById("messageInput").value;
         peer = "offer";
     }
     console.log("After >"+key+"< peer:" + peer);

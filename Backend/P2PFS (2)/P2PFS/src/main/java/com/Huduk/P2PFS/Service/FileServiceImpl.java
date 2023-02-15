@@ -61,4 +61,9 @@ public class FileServiceImpl implements FileService {
 		return false;
 	}
 
+	@Override
+	public void deleteConnection(String id) {
+		fileRepo.deleteId(id);
+	}
+
 }
