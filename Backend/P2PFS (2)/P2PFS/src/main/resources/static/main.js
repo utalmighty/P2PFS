@@ -10,6 +10,25 @@ let receiveBuffer = [];
 let upcomingFileSize = 0;
 let upcomingFileName = "";
 let receivedSize = 0;
+let count = 0;
+let flip = null;
+let keyInput = document.getElementById("keyInput");
+let makeOfferButton = document.getElementById("makeOfferButton");
+let callButton = document.getElementById("callButton");
+let key = ""
+let isSender = false
+
+makeOfferButton.onclick = function () {
+    makeOffer();
+}
+
+callButton.onclick = function () {
+    search();
+}
+
+keyInput.onchange = function () {
+    key = keyInput.value;
+}
 
 peerConnection.onicecandidate = function(event) {
     if (event.candidate) {
@@ -44,12 +63,19 @@ function connectToSockets() {
     });   
 }
 
+function copyToClipboard() {
+    navigator.clipboard.writeText(keyInput.value);
+}
+
 async function makeOffer() {
     const fileInput = document.getElementById("fileupload");
     if (fileInput.files.length == 0) {
         alert("Select file first");
         return;
     }
+    isSender = true
+    callButton.value = "Copy";
+    callButton.onclick = e=> navigator.clipboard.writeText(keyInput.value);
     file = fileInput.files[0];
     console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
     // Handle 0 size files.
@@ -69,7 +95,6 @@ async function makeOffer() {
 }
 
 async function search() {
-    let key = document.getElementById("keyInput").value;
     sendSearch(key);
 }
 
@@ -77,7 +102,7 @@ async function privateMessageIncomingLogic(messageBody) {
     let message = JSON.parse(messageBody);
     if (message.id) {
         console.log("Received Id",  message.id);
-        document.getElementById("messageInput").value = message.id;
+        keyInput.value = message.id;
     }
     else if (message.offer){
         console.log("Received Offer ", message.offer);
@@ -86,7 +111,6 @@ async function privateMessageIncomingLogic(messageBody) {
         upcomingFileName = message.filename;
         const remoteDesc = new RTCSessionDescription(message.offer);
         await peerConnection.setRemoteDescription(remoteDesc);
-        let key = document.getElementById("keyInput").value;
         const answer = await peerConnection.createAnswer();
         await peerConnection.setLocalDescription(answer);
         console.log("Answer Created: ", answer);
@@ -113,7 +137,8 @@ async function privateMessageIncomingLogic(messageBody) {
 }
 
 function updateCount(message) {
-    document.getElementById("countInput").value = message["count"];
+    count = message["count"];
+    flip.value = count;
 }
 
 function incrementCount(uniqueId) {
@@ -141,15 +166,13 @@ function sendSearch(id) {
 }
 
 function sendCandidate(candidate) {
-    let key = document.getElementById("keyInput").value;
-    console.log("Before >"+key+"<");
     let peer = "answer";
-    if (key==''){
+    if (isSender){
         key = document.getElementById("messageInput").value;
         peer = "offer";
     }
     console.log("After >"+key+"< peer:" + peer);
-    if (key!=''){
+    if (!isSender){
         signalingChannel.send("/app/candidate", {"id": key, "peer": peer}, JSON.stringify(candidate));
     }
 }
@@ -199,14 +222,11 @@ function onReceiveMessageCallback(event) {
         `Click to download '${upcomingFileName}' (${upcomingFileSize} bytes)`;
     downloadAnchor.style.display = 'block';
     // TODO: Close data channel
-    let key = document.getElementById("keyInput").value;
     incrementCount(key);
     closeDataChannels();
     }
 }
 
 function setupFlip(tick) {
-    Tick.helper.interval(function() {
-      tick.value++;
-    }, 1000);
-  }
+    flip = tick;
+}

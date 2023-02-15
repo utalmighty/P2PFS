@@ -14,9 +14,9 @@ import com.Huduk.P2PFS.Models.User;
 @Repository
 public class FileRepoImpl implements FileRepo {
 	
-	private static final String RANGE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-										+"abcdefghijklmnopqrstuvwxyz"
-										+"01234567890"
+	private static final String SPACE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+										//+"abcdefghijklmnopqrstuvwxyz"
+										//+"01234567890"
 										//+"@#$!*+-_?. "
 										;
 	
@@ -28,9 +28,10 @@ public class FileRepoImpl implements FileRepo {
 	@Override
 	public String setSource(User source, FileMetaData file) {
 		// TODO Auto-generated method stub
-		String url = generateRandom(7);
+		int size = 12;
+		String url = generateRandom(size);
 		while (database.containsKey(url)) {
-			url = generateRandom(7);
+			url = generateRandom(size);
 		}
 		Peers peers = new Peers();
 		peers.setSource(source);
@@ -44,8 +45,8 @@ public class FileRepoImpl implements FileRepo {
 	private String generateRandom(int length) {
 		StringBuilder sb = new StringBuilder(length);
 		for( int i=0; i<=length; i++ ) {
-			int index = random.nextInt(RANGE.length());
-			sb.append(RANGE.charAt(index));
+			int index = random.nextInt(SPACE.length());
+			sb.append(SPACE.charAt(index));
 		}
 		return sb.toString();
 	}
