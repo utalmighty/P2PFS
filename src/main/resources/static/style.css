@@ -1,0 +1,82 @@
+.navbar{
+    display: flex;
+    flex-direction: row;
+    justify-content:  space-between;
+    background-color: black;
+    color: white;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: space-around;
+    margin-bottom: 60vh;
+}
+#row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.allbtn{
+    text-align: center;
+    margin-right: 1vw;
+    margin-left: 1vw;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
+    border: 0px;
+    background-color: #cfe2f3;
+    font-family: monospace;
+    cursor: pointer;
+    color: #000000;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: box-shadow, transform;
+    transition-property: box-shadow, transform;
+}
+.allbtn:hover, .allbtn:focus, .allbtn:active {
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+}
+
+.btn{ 
+    font-size: 5vh;
+    width: 40vw;  
+    border-radius: 70px;
+    padding-right: 50px;
+    padding-left: 50px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.circle{
+    font-size: 10px;
+    size: 40vw;
+    height: 10vh;
+    width: 10vh;
+    border-radius: 5vh;
+}
+
+body {
+    display: block;
+    margin: 0px;
+}
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+    padding-inline-end: 40px;    
+    font-family: system-ui;
+
+}
+ul:hover {
+    color: aqua;
+}
