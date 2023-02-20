@@ -7,13 +7,16 @@ body {
 .view {
     height: 100vh;
 }
+.repo{
+    height: 100%;
+}
 
 .navbar{
     display: flex;
     flex-direction: row;
     justify-content:  space-between;
     background-color: black;
-    color: white;
+    color: rgb(240, 240, 240);
     height: 7vh;
 }
 
@@ -89,7 +92,11 @@ ul {
 
 }
 ul:hover {
-    color: aqua;
+    color: rgba(205,217,229,0.7);
+}
+
+.repo:hover {
+    background: url(github-mark.png)
 }
 
 .footer {
