@@ -44,6 +44,7 @@ peerConnection.ondatachannel =e =>{
 }
 
 function onLoadScript() {
+    document.getElementsByClassName("tick-credits")[0].remove();
     connectToSockets();
 }
 
