@@ -17,6 +17,7 @@ let makeOfferButton = document.getElementById("makeOfferButton")
 let callButton = document.getElementById("callButton")
 let key = ""
 let isSender = false
+let sending = false
 
 makeOfferButton.onclick = function () {
     makeOffer()
@@ -124,7 +125,8 @@ async function privateMessageIncomingLogic(messageBody) {
         peerConnection.addIceCandidate(candidate).then(()=> {
             setTimeout(() => {
                 console.log(peerConnection.dataChannel.readyState)
-                if (peerConnection.dataChannel.readyState == "open") {
+                if (peerConnection.dataChannel.readyState == "open" && !sending) {
+                    sending = true;
                     sendData();
                 }
             }, 1000);
