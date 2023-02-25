@@ -193,6 +193,7 @@ function sendData() {
       console.log('FileRead.onload ', e);
       peerConnection.dataChannel.send(e.target.result);
       offset += e.target.result.byteLength;
+      callButton.value = percent(offset, file.size);
       //sendProgress.value = offset;
       if (offset < file.size) {
         readSlice(offset);
@@ -212,9 +213,7 @@ function onReceiveMessageCallback(event) {
     receiveBuffer.push(event.data);
     receivedSize += event.data.byteLength;
     //receiveProgress.value = receivedSize;
-
-    // we are assuming that our signaling protocol told
-    // about the expected file size (and name, hash, etc).
+    callButton.value = percent(receivedSize, upcomingFileSize);
     if (receivedSize === upcomingFileSize) {
     const received = new Blob(receiveBuffer);
     receiveBuffer = [];
@@ -232,4 +231,9 @@ function onReceiveMessageCallback(event) {
 
 function setupFlip(tick) {
     flip = tick;
+}
+
+function percent(value, max) {
+    let per = parseInt((value/max)*100)
+    return per+"%";
 }

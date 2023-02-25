@@ -5,13 +5,31 @@ spring:
 
 spring:
   profile: production
+  datasource:
+    url: jdbc:postgresql://localhost:5432/FileShare
+    username: postgres
+    password: postgres
   
 server:
   port: 9001
 
+persistCount: 100
+counterId: File count
+schema: P2PFS
+tableName: counter
+
 ---
 spring:
   profile: development
+  datasource:
+    url: jdbc:postgresql://localhost:5432/FileShare
+    username: postgres
+    password: postgres
   
 server:
     port: 8081
+
+persistCount: 5
+counterId: File count
+schema: P2PFS
+tableName: counter
