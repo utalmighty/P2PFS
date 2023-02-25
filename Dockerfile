@@ -1,7 +1,7 @@
 FROM openjdk:17
 WORKDIR /P2PFS
 
-COPY mvnw .
+COPY mvn .
 COPY .mvn .mvn
 COPY pom.xml .
 COPY src src
