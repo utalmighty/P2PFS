@@ -1,19 +1,19 @@
 spring:
   profiles:
-    active: development
+    active: ${ACTIVE_PROFILE}
 ---
 
 spring:
   profile: production
   datasource:
-    url: jdbc:postgresql://localhost:5432/FileShare
-    username: postgres
-    password: postgres
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   
 server:
   port: 9001
 
-persistCount: 100
+persistCount: 50
 counterId: File count
 schema: P2PFS
 tableName: counter
@@ -22,9 +22,9 @@ tableName: counter
 spring:
   profile: development
   datasource:
-    url: jdbc:postgresql://localhost:5432/FileShare
-    username: postgres
-    password: postgres
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   
 server:
     port: 8081
