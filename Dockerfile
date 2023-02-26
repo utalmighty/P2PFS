@@ -4,7 +4,7 @@ WORKDIR /P2PFS
 COPY pom.xml .
 COPY src src
 
-RUN ./mvn package
+RUN mvn clean package
 COPY target/*.jar P2PFS.jar
 
 FROM openjdk:17
