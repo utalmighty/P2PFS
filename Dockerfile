@@ -1,4 +1,5 @@
 FROM openjdk:17 as buildstage
-WORKDIR /P2PFS
-ENTRYPOINT [ "java", "-jar", "P2PFS2.jar" ]
-EXPOSE 8081/tcp
+FROM maven
+CMD [ "mvn", "clean", "package" ]
+COPY /target/*.jar /P2PFS.jar
+ENTRYPOINT [ "java", "-jar", "/P2PFS.jar" ]
