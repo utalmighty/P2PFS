@@ -6,7 +6,7 @@ spring:
 spring:
   profile: production
   datasource:
-    url: ${DB_URL}
+    url: jdbc:postgresql://tiny.db.elephantsql.com:5432/${DB_USERNAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   
@@ -22,7 +22,7 @@ tableName: counter
 spring:
   profile: development
   datasource:
-    url: ${DB_URL}
+    url: jdbc:postgresql://tiny.db.elephantsql.com:5432/${DB_USERNAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   

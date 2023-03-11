@@ -1,5 +1,14 @@
-FROM openjdk:17 as buildstage
+FROM openjdk:17
 FROM maven
+
+ARG ACTIVE_PROFILE
+ARG DB_USERNAME
+ARG DB_PASSWORD
+
+ENV ACTIVE_PROFILE=${ACTIVE_PROFILE} \
+    DB_USERNAME=${DB_USERNAME} \
+    DB_PASSWORD=${DB_PASSWORD}
+    
 CMD [ "mvn", "clean", "package" ]
 COPY /target/*.jar /P2PFS.jar
 ENTRYPOINT [ "java", "-jar", "/P2PFS.jar" ]
