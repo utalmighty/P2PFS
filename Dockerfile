@@ -18,5 +18,5 @@ ENV ACTIVE_PROFILE=$ACTIVE_PROFILE \
     DB_PASSWORD=$DB_PASSWORD
 
 COPY --from=build /home/app/target/*.jar /usr/local/lib/P2PFS.jar
-EXPOSE 8080
 ENTRYPOINT ["java","-jar","/usr/local/lib/P2PFS.jar"]
+EXPOSE 8080
