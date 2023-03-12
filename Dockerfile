@@ -19,4 +19,4 @@ ENV ACTIVE_PROFILE=$ACTIVE_PROFILE \
 
 COPY --from=build /home/app/target/*.jar /usr/local/lib/P2PFS.jar
 ENTRYPOINT ["java","-jar","/usr/local/lib/P2PFS.jar"]
-EXPOSE 8080
+EXPOSE 8080/tcp
