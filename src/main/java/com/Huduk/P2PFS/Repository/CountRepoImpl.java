@@ -3,6 +3,8 @@ package com.Huduk.P2PFS.Repository;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class CountRepoImpl implements CountRepo {
+
+	private static Logger logger = LoggerFactory.getLogger(CountRepoImpl.class);
 	
 	@Value("${persistCount}")
 	private int persistAfter;
@@ -38,7 +42,7 @@ public class CountRepoImpl implements CountRepo {
 	}
 	
 	private void updateInDatabase() {
-		System.out.println("Syncing count with db");
+		logger.info("Syncing count with db");
 		String time = LocalDateTime.now().toString();
 		time.replace("T", " ");
 		String sql = "UPDATE \"" + schema + "\"." + table +" "
@@ -51,7 +55,7 @@ public class CountRepoImpl implements CountRepo {
 				synchronized(this)  {
 					this.localCount = 0;
 				}
-				System.out.println("Count updated with db");
+				logger.info("Count updated with db");
 				this.dbCount = getCountFromDB();
 			}
 		}catch (Exception e) {
@@ -60,7 +64,7 @@ public class CountRepoImpl implements CountRepo {
 	}
 	
 	private long getCountFromDB() {
-		System.out.println("Fetching value from db");
+		logger.info("Fetching value from db");
 		try {
 			String sql = "SELECT count FROM \""+ schema +"\"." + table +" WHERE \"Name\"='" + counterId + "';";
 			Map<String, Object> record = template.queryForMap(sql);
