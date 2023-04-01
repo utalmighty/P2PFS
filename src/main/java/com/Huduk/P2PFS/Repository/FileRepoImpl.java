@@ -44,7 +44,7 @@ public class FileRepoImpl implements FileRepo {
 		
 	private String generateRandom(int length) {
 		StringBuilder sb = new StringBuilder(length);
-		for( int i=0; i<=length; i++ ) {
+		for( int i=0; i<length; i++ ) {
 			int index = random.nextInt(SPACE.length());
 			sb.append(SPACE.charAt(index));
 		}

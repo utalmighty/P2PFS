@@ -9,16 +9,12 @@ import org.springframework.util.LinkedMultiValueMap;
 
 import com.Huduk.P2PFS.Models.Count;
 import com.Huduk.P2PFS.Service.CountService;
-import com.Huduk.P2PFS.Service.FileService;
 
 @Controller
 public class CountController {
 	
 	@Autowired
 	CountService countService;
-	
-	@Autowired
-	private FileService fileService;
 
 	@MessageMapping("/count")
 	@SendTo("/topic/count")
@@ -28,11 +24,7 @@ public class CountController {
 	
 	@MessageMapping("/updateCount/increment")
 	@SendTo("/topic/count")
-	public Count updateCount(@Header("nativeHeaders") LinkedMultiValueMap<String, String> headers) {
-		String id = headers.get("id").get(0);
-		if (fileService.isValidCountIncrementRequest(id)) {
-			countService.updateCurrentCount();
-		}
-		return countService.getCurrentCount();
+	public Count updateCountAndGetNewCount(@Header("nativeHeaders") LinkedMultiValueMap<String, String> headers) {
+		return countService.updateAndGetNewCount(headers);
 	}
 }

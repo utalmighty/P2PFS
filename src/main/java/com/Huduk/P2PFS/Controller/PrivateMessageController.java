@@ -13,6 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.Huduk.P2PFS.ExceptionHandler.ExceptionController;
 import com.Huduk.P2PFS.Models.Connection;
 import com.Huduk.P2PFS.Models.FileMetaData;
 import com.Huduk.P2PFS.Models.RTCDescription;
@@ -82,11 +83,11 @@ public class PrivateMessageController {
 			offerResp.put("offer", conn.getPeers().getSource().getDescription());
 			offerResp.put("filename", conn.getFile().getName());
 			offerResp.put("filesize", conn.getFile().getSize());
+			template.convertAndSendToUser(destination, "/queue/send", offerResp);
 		}
 		else {
-			offerResp.put("error", "Peer offline");
+			ExceptionController.sendPrivateException(destination, "Peer offline", id+"Wrong peer or peer offline.", true);
 		}
-		template.convertAndSendToUser(destination, "/queue/send", offerResp);
 	}
 	
 	@MessageMapping("/answer")
