@@ -26,6 +26,9 @@ public class CountServiceImpl implements CountService {
 	@Autowired
 	FileService fileService;
 	
+	@Autowired
+	ExceptionController exceptionController;
+	
 	@Override
 	public Count getCurrentCount() {
 		long currentCount = 0;
@@ -51,7 +54,7 @@ public class CountServiceImpl implements CountService {
 					return getCountObject(0);
 				}
 			else {
-				ExceptionController.sendPrivateException(id, "Invalid id to update count request.", "", false);
+				exceptionController.sendPrivateException(id, "Invalid id to update count request.", "", false);
 			}
 		}
 		else {
