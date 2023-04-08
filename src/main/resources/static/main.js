@@ -78,8 +78,6 @@ async function makeOffer() {
         return;
     }
     isSender = true
-    callButton.value = "Copy";
-    callButton.onclick = e=> navigator.clipboard.writeText(keyInput.value);
     file = fileInput.files[0];
     console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
     // Handle 0 size files.
@@ -103,6 +101,8 @@ async function privateMessageIncomingLogic(messageBody) {
     if (message.id) {
         console.log("Received Id",  message.id);
         keyInput.value = message.id;
+        callButton.value = "Copy";
+        callButton.onclick = e=> navigator.clipboard.writeText(message.id);
     }
     else if (message.offer){
         console.log("Received Offer ", message.offer);
