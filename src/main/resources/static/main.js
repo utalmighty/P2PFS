@@ -56,6 +56,9 @@ function connectToSockets() {
         signalingChannel.subscribe('/topic/count', function(messageOutput) {
             updateCount(JSON.parse(messageOutput.body));
         })
+        signalingChannel.subscribe('/topic/error', function(messageOutput) {
+            publicError(JSON.parse(messageOutput.body));
+        })
         signalingChannel.subscribe('/user/queue/send', function(messageOutput) {
             privateMessageIncomingLogic(messageOutput.body);
         })

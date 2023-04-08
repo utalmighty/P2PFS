@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.Huduk.P2PFS.Models.Connection;
@@ -24,11 +25,12 @@ public class FileRepoImpl implements FileRepo {
 	
 	private Map<String, Connection> database = new HashMap<>();
 	
+	@Value("${keySize}")
+	private int size;
+	
 	
 	@Override
 	public String setSource(User source, FileMetaData file) {
-		// TODO Auto-generated method stub
-		int size = 12;
 		String url = generateRandom(size);
 		while (database.containsKey(url)) {
 			url = generateRandom(size);
@@ -44,7 +46,7 @@ public class FileRepoImpl implements FileRepo {
 		
 	private String generateRandom(int length) {
 		StringBuilder sb = new StringBuilder(length);
-		for( int i=0; i<=length; i++ ) {
+		for( int i=0; i<length; i++ ) {
 			int index = random.nextInt(SPACE.length());
 			sb.append(SPACE.charAt(index));
 		}

@@ -35,14 +35,13 @@ public class CountRepoImpl implements CountRepo {
 	private long localCount;
 	
 	private void incrementCurrentCount(long count) {
-		// watch out for Race Condition
 		synchronized(this)  { 
-			this.localCount += count;
+			localCount += count;
 		}
 	}
 	
 	private void updateInDatabase() {
-		logger.info("Syncing count with db");
+		logger.debug("Syncing count with db");
 		String time = LocalDateTime.now().toString();
 		time.replace("T", " ");
 		String sql = "UPDATE \"" + schema + "\"." + table +" "
@@ -51,26 +50,25 @@ public class CountRepoImpl implements CountRepo {
 		try {
 			int rowsEffected = template.update(sql);
 			if (rowsEffected == 1) {
-				//Only one row should be effected
 				synchronized(this)  {
-					this.localCount = 0;
+					localCount = 0;
 				}
-				logger.info("Count updated with db");
-				this.dbCount = getCountFromDB();
+				logger.debug("Count updated in database");
+				dbCount = getCountFromDB();
 			}
 		}catch (Exception e) {
-			System.err.println("Database Exception while upodating => " + e.getLocalizedMessage() + "Count value is still: "+ localCount);
+			logger.error("Database Exception while updating the count: {}, {} {}" + e.getLocalizedMessage(), "Count value is still:", localCount);
 		}
 	}
 	
 	private long getCountFromDB() {
-		logger.info("Fetching value from db");
+		logger.debug("Fetching value from database");
 		try {
 			String sql = "SELECT count FROM \""+ schema +"\"." + table +" WHERE \"Name\"='" + counterId + "';";
 			Map<String, Object> record = template.queryForMap(sql);
 			return (long) record.get("count");
 		}catch (Exception e) {
-			System.err.println("Database Exception while syncing => " + e.getLocalizedMessage());
+			logger.error("Database Exception while getting count: {}", e.getLocalizedMessage());
 			return 0;
 		}
 	}
@@ -88,7 +86,7 @@ public class CountRepoImpl implements CountRepo {
 	@Override
 	public void incrementCurrentCount() {
 		incrementCurrentCount(1);
-		if (this.localCount > 0 && this.localCount%persistAfter == 0) {
+		if (localCount > 0 && localCount%persistAfter == 0) {
 			// Eventual Consistency ie after every 'persistAfter' database value will be updated
 			// TODO: Also persist value after some interval.
 			updateInDatabase();

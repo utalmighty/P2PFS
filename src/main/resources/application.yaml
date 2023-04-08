@@ -13,6 +13,7 @@ spring:
 server:
   port: 8080
 
+keySize: 12
 persistCount: 10
 counterId: File count
 schema: P2PFS
@@ -25,11 +26,12 @@ spring:
     url: jdbc:postgresql://tiny.db.elephantsql.com:5432/${DB_USERNAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-  
+
 server:
     port: 8080
 
-persistCount: 10
+keySize: 4
+persistCount: 5
 counterId: File count
 schema: P2PFS
 tableName: counter
