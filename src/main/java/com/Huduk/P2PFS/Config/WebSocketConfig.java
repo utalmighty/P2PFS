@@ -19,8 +19,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/upgrade")
-			.setAllowedOriginPatterns("*")
-			.setHandshakeHandler(new UserHandshakeHandler())
+			.setHandshakeHandler(new UserHandshakeHandler()).setAllowedOriginPatterns("*")
 			.withSockJS();
 	}
 
