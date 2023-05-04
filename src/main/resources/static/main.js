@@ -50,8 +50,8 @@ function onLoadScript() {
 }
 
 function connectToSockets() {
-    let socket = new SockJS('/upgrade');
-    signalingChannel = Stomp.over(socket, null, {transports:'websocket'});
+    let socket = new SockJS('/upgrade', null, {transports: ['websocket']});
+    signalingChannel = Stomp.over(socket);
     signalingChannel.connect({}, function(frame) { 
         signalingChannel.subscribe('/topic/count', function(messageOutput) {
             updateCount(JSON.parse(messageOutput.body));
