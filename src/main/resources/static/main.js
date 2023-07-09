@@ -38,15 +38,19 @@ peerConnection.onicecandidate = function(event) {
     }
 }
 
+function onLoadScript() {
+    document.getElementsByClassName("tick-credits")[0].remove();
+    connectToSockets();
+}
+
+function copyToClipboard() {
+    navigator.clipboard.writeText(keyInput.value);
+}
+
 peerConnection.ondatachannel =e =>{
     peerConnection.dataChannel = e.channel;
     peerConnection.dataChannel.onmessage = e => onReceiveMessageCallback(e);
     peerConnection.dataChannel.onopen = e => console.log("Connection Opened," + e);
-}
-
-function onLoadScript() {
-    document.getElementsByClassName("tick-credits")[0].remove();
-    connectToSockets();
 }
 
 function connectToSockets() {
@@ -63,29 +67,20 @@ function connectToSockets() {
             privateMessageIncomingLogic(messageOutput.body);
         })
         getUpdatedCount();
-        //sendPrivateMessage("eg");
     });   
-}
-
-function copyToClipboard() {
-    navigator.clipboard.writeText(keyInput.value);
 }
 
 async function makeOffer() {
     const fileInput = document.getElementById("fileupload");
     if (fileInput.files.length == 0) {
-        alert("Select file first");
+        alert("Please select a file to share!");
         return;
     }
     isSender = true
     file = fileInput.files[0];
     console.log(`File is ${[file.name, file.size, file.type, file.lastModified].join(' ')}`);
-    // Handle 0 size files.
-    //statusMessage.textContent = '';
-    //downloadAnchor.textContent = '';
     if (file.size === 0) {
-      //bitrateDiv.innerHTML = '';
-      //statusMessage.textContent = 'File is empty, please select a non-empty file';
+      alert("File is empty, please select a non-empty file");
       return;
     }
     peerConnection.dataChannel = peerConnection.createDataChannel("dataChannel");
@@ -101,7 +96,7 @@ async function privateMessageIncomingLogic(messageBody) {
     if (message.id) {
         console.log("Received Id",  message.id);
         keyInput.value = message.id;
-        callButton.value = "Copy";
+        callButton.value = "COPY";
         callButton.onclick = e=> navigator.clipboard.writeText(message.id);
     }
     else if (message.offer){
@@ -178,15 +173,12 @@ function sendCandidate(candidate) {
     if (isSender){
         peer = "offer";
     }
-    console.log("After >"+key+"< peer:" + peer);
     if (!isSender){
         signalingChannel.send("/app/candidate", {"id": key, "peer": peer}, JSON.stringify(candidate));
     }
 }
 
 function sendData() {
-    //sendProgress.max = file.size;
-    //receiveProgress.max = file.size;
     const chunkSize = 16384;
     fileReader = new FileReader();
     let offset = 0;
@@ -215,7 +207,6 @@ function onReceiveMessageCallback(event) {
     console.log(`Received Message ${event.data.byteLength}`);
     receiveBuffer.push(event.data);
     receivedSize += event.data.byteLength;
-    //receiveProgress.value = receivedSize;
     callButton.value = percent(receivedSize, upcomingFileSize);
     if (receivedSize === upcomingFileSize) {
     const received = new Blob(receiveBuffer);
