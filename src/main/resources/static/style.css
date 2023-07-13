@@ -15,6 +15,15 @@ body {
 .repo{
     height: 100%;
 }
+.github {
+    margin-top: 1.4vh;
+    margin-bottom: 1.4vh;
+}
+
+.list{
+    margin-top: auto;
+    margin-bottom: auto;
+}
 
 .repo:hover {
     opacity: 0.6;
