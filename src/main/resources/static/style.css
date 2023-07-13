@@ -12,6 +12,22 @@ body {
 .logo {
 }
 
+.popup {
+    display: none;
+    margin: 10vh 10vw 10vh 10vw;
+    height: 80vh;
+    width: 80vw;
+    position: fixed;
+    background-color: azure;
+    opacity: 100%;
+    border-radius: 10px;
+    font-family: system-ui;
+}
+
+#popupContent {
+    overflow: auto;
+}
+
 .repo{
     height: 100%;
 }
@@ -23,10 +39,6 @@ body {
 .list{
     margin-top: auto;
     margin-bottom: auto;
-}
-
-.repo:hover {
-    opacity: 0.6;
 }
 
 .navbar{
@@ -114,6 +126,7 @@ ul:hover {
 }
 
 .repo:hover {
+    opacity: 0.6;
     background: url(github-mark.png)
 }
 

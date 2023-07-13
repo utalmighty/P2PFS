@@ -10,9 +10,15 @@
 </head>
 <body onload="onLoadScript()">
     <div class="view">
+        <div class="depth">
+            <div class="popup">
+                <div id="popupTop"></div>
+                <div id="popupContent"><p>Peer to Peer file sharing</p></div>
+            </div>
+        </div>
         <div class="header">
             <div class="navbar">
-                <ul class = "list"><a>About</a></ul>
+                <ul class = "list" onclick="popupLogic()"><a>About</a></ul>
                 <ul class="list">
                     <div class="logo">
                         <a>P2PFS</a>

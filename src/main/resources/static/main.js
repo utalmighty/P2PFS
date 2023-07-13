@@ -15,9 +15,11 @@ let flip = null
 let keyInput = document.getElementById("keyInput")
 let makeOfferButton = document.getElementById("makeOfferButton")
 let callButton = document.getElementById("callButton")
+let popup = document.getElementsByClassName("popup")[0];
 let key = ""
 let isSender = false
 let sending = false
+let popupStatus = false
 
 makeOfferButton.onclick = function () {
     makeOffer()
@@ -41,6 +43,12 @@ peerConnection.onicecandidate = function(event) {
 function onLoadScript() {
     document.getElementsByClassName("tick-credits")[0].remove();
     connectToSockets();
+}
+
+function popupLogic() {
+    popupStatus = !popupStatus;
+    if(popupStatus) popup.style.display = "block";
+    else popup.style.display = "none";
 }
 
 function copyToClipboard() {
