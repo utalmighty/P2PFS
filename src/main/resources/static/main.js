@@ -16,9 +16,11 @@ let keyInput = document.getElementById("keyInput")
 let makeOfferButton = document.getElementById("makeOfferButton")
 let callButton = document.getElementById("callButton")
 let popup = document.getElementsByClassName("popup")[0];
+let about = document.getElementById("about");
 let key = ""
 let isSender = false
 let sending = false
+let aboutStatus = false
 let popupStatus = false
 
 makeOfferButton.onclick = function () {
@@ -46,10 +48,26 @@ function onLoadScript() {
 }
 
 function popupLogic() {
-    popupStatus = !popupStatus;
-    if(popupStatus) popup.style.display = "block";
-    else popup.style.display = "none";
+    if (!popupStatus) {
+        console.log("visible");
+        popup.style.display = "block";
+        popupStatus = true
+        aboutStatus = true
+    }
 }
+
+window.addEventListener('click', function(e){  
+    if (aboutStatus) {
+        aboutStatus = false
+    }
+    else {
+        if (popupStatus && !popup.contains(e.target)){
+            popupStatus  = false
+            console.log("hidden");
+            popup.style.display = "none";
+        }
+    }
+});
 
 function copyToClipboard() {
     navigator.clipboard.writeText(keyInput.value);

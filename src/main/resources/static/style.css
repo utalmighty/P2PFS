@@ -9,9 +9,6 @@ body {
     height: 100vh;
 }
 
-.logo {
-}
-
 .popup {
     display: none;
     margin: 10vh 10vw 10vh 10vw;
