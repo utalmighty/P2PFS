@@ -49,7 +49,6 @@ function onLoadScript() {
 
 function popupLogic() {
     if (!popupStatus) {
-        console.log("visible");
         popup.style.display = "block";
         popupStatus = true
         aboutStatus = true
@@ -60,12 +59,10 @@ window.addEventListener('click', function(e){
     if (aboutStatus) {
         aboutStatus = false
     }
-    else {
-        if (popupStatus && !popup.contains(e.target)){
-            popupStatus  = false
-            console.log("hidden");
-            popup.style.display = "none";
-        }
+    else if(!popup.contains(e.target)){
+        console.log("here");
+        popupStatus  = false
+        popup.style.display = "none";
     }
 });
 
