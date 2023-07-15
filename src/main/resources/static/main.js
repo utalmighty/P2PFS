@@ -60,7 +60,6 @@ window.addEventListener('click', function(e){
         aboutStatus = false
     }
     else if(!popup.contains(e.target)){
-        console.log("here");
         popupStatus  = false
         popup.style.display = "none";
     }
@@ -70,10 +69,9 @@ function copyToClipboard() {
     navigator.clipboard.writeText(keyInput.value);
 }
 
-peerConnection.ondatachannel =e =>{
+peerConnection.ondatachannel = e =>{
     peerConnection.dataChannel = e.channel;
     peerConnection.dataChannel.onmessage = e => onReceiveMessageCallback(e);
-    peerConnection.dataChannel.onopen = e => console.log("Connection Opened," + e);
 }
 
 function connectToSockets() {
@@ -107,7 +105,11 @@ async function makeOffer() {
       return;
     }
     peerConnection.dataChannel = peerConnection.createDataChannel("dataChannel");
-    console.log(peerConnection.dataChannel.readyState);
+    peerConnection.dataChannel.addEventListener('open', function name() {
+        if (!sending) {
+            sending = true;
+            sendData();
+        }})
     const offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
     console.log("Offer Created: ", offer);
@@ -143,15 +145,7 @@ async function privateMessageIncomingLogic(messageBody) {
         let candidate = JSON.parse(message.icecandidate);
         console.log("Received Candidate of Peer", candidate);
         const remoteDesc = new RTCIceCandidate(candidate);
-        peerConnection.addIceCandidate(candidate).then(()=> {
-            setTimeout(() => {
-                console.log(peerConnection.dataChannel.readyState)
-                if (peerConnection.dataChannel.readyState == "open" && !sending) {
-                    sending = true;
-                    sendData();
-                }
-            }, 1000);
-        })
+        peerConnection.addIceCandidate(candidate)
     }
     else if (message.error) {
         alert(message.error)
@@ -193,12 +187,8 @@ function sendSearch() {
 
 function sendCandidate(candidate) {
     let peer = "answer";
-    if (isSender){
-        peer = "offer";
-    }
-    if (!isSender){
-        signalingChannel.send("/app/candidate", {"id": key, "peer": peer}, JSON.stringify(candidate));
-    }
+    if (isSender) peer = "offer";
+    else signalingChannel.send("/app/candidate", {"id": key, "peer": peer}, JSON.stringify(candidate));
 }
 
 function sendData() {
