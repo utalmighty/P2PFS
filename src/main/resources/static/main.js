@@ -17,6 +17,7 @@ let makeOfferButton = document.getElementById("makeOfferButton")
 let callButton = document.getElementById("callButton")
 let popup = document.getElementsByClassName("popup")[0];
 let about = document.getElementById("about");
+let flipCredits = document.getElementsByClassName("tick-credits")[0];
 let key = ""
 let isSender = false
 let sending = false
@@ -43,7 +44,9 @@ peerConnection.onicecandidate = function(event) {
 }
 
 function onLoadScript() {
-    document.getElementsByClassName("tick-credits")[0].remove();
+    if (flipCredits != null ) {
+        flipCredits.remove();
+    }
     connectToSockets();
 }
 

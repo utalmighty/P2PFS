@@ -9,6 +9,7 @@ spring:
     url: jdbc:postgresql://tiny.db.elephantsql.com:5432/${DB_USERNAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    maxActive: 2
   
 server:
   port: 8080
@@ -26,7 +27,8 @@ spring:
     url: jdbc:postgresql://tiny.db.elephantsql.com:5432/${DB_USERNAME}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-
+	maxActive: 1
+	
 server:
     port: 8080
 
